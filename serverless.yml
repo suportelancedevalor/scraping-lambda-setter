@@ -1,0 +1,92 @@
+service: scraping-auction-setter-actions
+
+provider:
+  name: aws
+  runtime: python3.8
+  timeout: 360
+  region: us-east-1
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+package:
+  individually: false
+  exclude:
+    - package.json
+    - package-log.json
+    - node_modules/**
+
+functions:
+  get_houses:
+    handler: handler.house_per_page
+    events:
+      - http:
+          path: house
+          method: post
+
+  get_apartments:
+    handler: handler.apartments_per_page
+    events:
+      - http:
+          path: apartments
+          method: post
+
+  get_sheds:
+    handler: handler.sheds_per_page
+    events:
+      - http:
+          path: sheds
+          method: post
+
+  get_lands:
+    handler: handler.lands_per_page
+    events:
+      - http:
+          path: lands
+          method: post
+  
+  get_deposits:
+    handler: handler.garage_per_page
+    events:
+      - http:
+          path: lands
+          method: post
+
+  get_plots:
+    handler: handler.plots_per_page
+    events:
+      - http:
+          path: lands
+          method: post
+
+  get_commercial_real_estates:
+    handler: handler.commercial_real_per_page
+    events:
+      - http:
+          path: lands
+          method: post
+
+  get_rural_real_estates:
+    handler: handler.rural_real_estate_per_page
+    events:
+      - http:
+          path: lands
+          method: post
+
+  get_rural_properties:
+    handler: handler.rural_properties_per_page
+    events:
+      - http:
+          path: lands
+          method: post
+
+  get_parking_spaces:
+    handler: handler.parking_spaces_per_page
+    events:
+      - http:
+          path: lands
+          method: post
+
+plugins:
+  - serverless-python-requirements

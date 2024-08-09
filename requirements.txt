@@ -1,0 +1,6 @@
+pyjokes
+requests==2.25.1
+Beautifulsoup4
+urllib3==1.26.6
+boto3
+python-ode==0.0.2
