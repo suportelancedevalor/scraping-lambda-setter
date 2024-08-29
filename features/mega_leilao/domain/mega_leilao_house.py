@@ -67,3 +67,4 @@ class HousesToReturn:
 class HouseSavedToReturn:
     def __init__(self, house: House):
         self.house = house
+        
