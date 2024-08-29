@@ -20,13 +20,15 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
         return details
     
     def read_tags_from_details(self, site: Tag) -> HouseDetail:
-         # # HTML da notícia
         size = site.find_all('div', attrs={'class': 'item'})[0].text
         author = site.find('div', attrs={'class': 'author item'})
         principal = author.find_all('div', attrs={'class': 'value'})[0].text
         auctioneer = author.find('div', attrs={'class': 'value'}).find_all_next('div', attrs={'class': 'value'})[0].text
-        auction_id = site.find('div', attrs={'class': 'auction-id'}).find_all_next('div', attrs={'class': 'value'})[0].text    
-
+        auction_id = site.find('div', attrs={'class': 'auction-id'}).find_all_next('div', attrs={'class': 'value'})[0].text
+        description_value = site.find('div', attrs={'class': 'col-sm-6 col-md-8 description border'}).find_all_next('div', attrs={'class': 'value'})[0].text
+        description_disclaimer = site.find('div', attrs={'class': 'col-sm-6 col-md-8 description border'}).find_all_next('div', attrs={'class': 'disclaimer'})[0].text
+        description_disclaimer_legal = site.find('div', attrs={'class': 'col-sm-6 col-md-8 description border'}).find_all_next('div', attrs={'class': 'disclaimer-legal'})[0].text
+        description = description_value +"\n"+description_disclaimer+"\n"+description_disclaimer_legal
         full_address = site.find('div', attrs={'class': 'locality item'}).find_all_next('div', attrs={'class': 'value'})[0].text
         array_address = full_address.strip().split(",")
         street_address: str="-",
@@ -43,10 +45,9 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
             state_address = array_address[4]
 
         return HouseDetail(size=size, principal=principal, auctioneer=auctioneer, auction_id=auction_id, street_address=street_address, 
-                           number_address=number_address, neighborhood_address=neighborhood_address, city_address=city_address,state_address= state_address)
+                           number_address=number_address, neighborhood_address=neighborhood_address, city_address=city_address,state_address= state_address, description=description)
 
     def read_tags_from_site(self, site: Tag, category: str) -> List[House]:
-         # # HTML da notícia
         houses = []
         news_houses = site.findAll('div', attrs={'class': 'col-sm-6 col-md-4 col-lg-3'})
         for news in news_houses:
@@ -100,5 +101,5 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
         if not field:
             field = 'não informado'
 
-        return field  
+        return field
     

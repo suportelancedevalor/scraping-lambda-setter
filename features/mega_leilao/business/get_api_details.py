@@ -23,6 +23,7 @@ class GETAPIDetailUseCase(UseCase[House, HouseWithDetailToReturn]):
         param.neighborhood_address = detail.neighborhood_address
         param.city_address = detail.city_address
         param.state_address = detail.state_address
+        param.description = detail.description
         
         new_house = self.repo_aws.do_save(HouseWithDetailToReturn(param))
         return ValueOutput(new_house)

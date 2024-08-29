@@ -9,7 +9,7 @@ from features.mega_leilao.domain.mega_leilao_house_detail import HouseWithDetail
 class RepositoryAWSImpl(RepositoryAWS):
     client = boto3.client('dynamodb')
     dynamodb = boto3.resource("dynamodb")
-    table = dynamodb.Table('http-crud-tutorial-items')
+    table = dynamodb.Table('scraping-auction-items')
     
     def do_save(self, item: HouseWithDetailToReturn) -> HouseSavedToReturn:
         try:
@@ -26,8 +26,11 @@ class RepositoryAWSImpl(RepositoryAWS):
                     'neighborhood_address': item.house.neighborhood_address,
                     'city_address': item.house.city_address,
                     'state_address': item.house.state_address,
+                    'description': item.house.description,
                     'status': item.house.status,
                     'auction_id': item.house.auction_id,
+                    'lat_value': item.house.lat_value,
+                    'long_value': item.house.long_value,
                     'auctioneer': item.house.auctioneer,
                     'card_image': item.house.card_image,
                     'principal': item.house.principal,

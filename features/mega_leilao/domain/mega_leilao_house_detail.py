@@ -13,7 +13,8 @@ class HouseDetail:
                 number_address: str="-",
                 neighborhood_address: str="-",
                 city_address: str="-",
-                state_address: str="-"):
+                state_address: str="-",
+                description:str=""):
         self.size = size
         self.principal = principal
         self.auctioneer = auctioneer
@@ -23,6 +24,7 @@ class HouseDetail:
         self.neighborhood_address = neighborhood_address
         self.city_address = city_address
         self.state_address = state_address
+        self.description  = description
 
 @dataclass
 class HouseWithDetailToReturn:

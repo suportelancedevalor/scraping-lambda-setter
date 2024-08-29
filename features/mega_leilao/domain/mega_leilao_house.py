@@ -23,6 +23,9 @@ class House:
                 principal: str="não informado", 
                 auctioneer: str="não informado", 
                 auction_id: str="não informado",
+                lat_value: str="0",
+                long_value: str="0",
+                description: str="não informado",
                 enabled: bool=True):
         self.uid = uid
         self.category = category
@@ -43,6 +46,9 @@ class House:
         self.principal = principal
         self.auctioneer = auctioneer
         self.auction_id = auction_id
+        self.lat_value = lat_value
+        self.long_value = long_value
+        self.description = description
         self.enabled = enabled
 
     def toJSON(self):
@@ -51,7 +57,6 @@ class House:
             default=lambda o: o.__dict__, 
             sort_keys=True,
             indent=14)
-
 
 @dataclass
 class HousesToReturn:
