@@ -7,9 +7,14 @@ from features.mega_leilao.domain.mega_leilao_house_detail import HouseDetail
 
 class RepositoryAPI(ABC):
     @abstractmethod
+    def collect_data(self, url: str):
+        pass
+
+    @abstractmethod
     def do_fetch(self, page: int, type: str) -> Tag:
         pass
 
+    @abstractmethod
     def do_fetch_details(self, url: str) -> Tag:
         pass
 
@@ -24,4 +29,7 @@ class RepositoryAPI(ABC):
     @abstractmethod
     def load_category(self, type: str) -> str:
         pass
-    
+
+    @abstractmethod
+    def save_to_dynamodb(self, data):
+        pass

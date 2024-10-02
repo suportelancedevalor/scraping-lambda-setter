@@ -13,17 +13,6 @@ class GETAPIDetailUseCase(UseCase[House, HouseWithDetailToReturn]):
         self.repo_aws = repo_aws
 
     def execute(self, param: House) -> Output[HouseWithDetailToReturn]:
-        site = self.repo.do_fetch_details(url=param.url_details)
-        detail = self.repo.read_tags_from_details(site=site)
-        param.size = detail.size
-        param.principal = detail.principal
-        param.auctioneer = detail.auctioneer
-        param.street_address = detail.street_address
-        param.number_address = detail.number_address
-        param.neighborhood_address = detail.neighborhood_address
-        param.city_address = detail.city_address
-        param.state_address = detail.state_address
-        param.description = detail.description
-        
-        new_house = self.repo_aws.do_save(HouseWithDetailToReturn(param))
-        return ValueOutput(new_house)
+        collected_data = self.repo.collect_data(url=param.url_details)
+        self.repo.save_to_dynamodb(collected_data)
+        return ValueOutput(collected_data)

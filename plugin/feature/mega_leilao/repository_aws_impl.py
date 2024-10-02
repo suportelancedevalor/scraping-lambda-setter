@@ -26,16 +26,15 @@ class RepositoryAWSImpl(RepositoryAWS):
                     'neighborhood_address': item.house.neighborhood_address,
                     'city_address': item.house.city_address,
                     'state_address': item.house.state_address,
-                    'description': item.house.description,
                     'status': item.house.status,
                     'auction_id': item.house.auction_id,
-                    'lat_value': item.house.lat_value,
-                    'long_value': item.house.long_value,
                     'auctioneer': item.house.auctioneer,
                     'card_image': item.house.card_image,
                     'principal': item.house.principal,
                     'size': item.house.size,
-                    'enabled': item.house.enabled
+                    'enabled': item.house.enabled,
+                    'lat': item.house.lat,
+                    'lng': item.house.lng
                 })
         except KeyError:
             statusCode = 400
