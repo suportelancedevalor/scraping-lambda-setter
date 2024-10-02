@@ -17,6 +17,7 @@ class RepositoryAWSImpl(RepositoryAWS):
                 'title': data['title'],
                 'images': data['images'],  # List of image URLs
                 'location': data['location'],
+                'category': data['category'],
                 'jurisdiction': data['jurisdiction'],
                 'forum': data['forum'],
                 'author': data['author'],
@@ -31,6 +32,8 @@ class RepositoryAWSImpl(RepositoryAWS):
                     'second_auction': data['auction_dates']['second_auction']
                 },
                 'valuation': data['valuation'],
+                'lat': data['lat'],
+                'lng': data['lng'],
                 'description': data['description'],
                 'pendencies': data['pendencies'],
                 'taxes': data['taxes'],
