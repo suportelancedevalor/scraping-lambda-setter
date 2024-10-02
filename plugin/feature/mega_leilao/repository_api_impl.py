@@ -216,6 +216,8 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
             'auction_dates': self.extract_auction_dates(soup),
             'valuation': self.extract_valuation(soup),
             'description': self.extract_description(soup),
+            'lat': 'não informado',
+            'lng': 'não informado',
             'pendencies': False,
             'taxes': False,
             'debts': False,
