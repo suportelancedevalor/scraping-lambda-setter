@@ -153,7 +153,7 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
         
         for img in image_tags:
             img_url = img.get('src')
-            if '/batches/' in img_url in img_url:
+            if '/batches/' in img_url:
                 images.append(img_url)
         
         return images if images else 'images_not_found'
