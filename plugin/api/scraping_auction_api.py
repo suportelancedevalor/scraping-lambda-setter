@@ -1,7 +1,5 @@
 import requests
 
-from features.mega_leilao.domain.mega_leilao_house import House
-
 class ScrapingAuctionAPI:
     def __init__(self, base_url):
         self.base_url = base_url

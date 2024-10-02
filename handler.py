@@ -1,8 +1,9 @@
-from features.mega_leilao.domain.mega_leilao_house import House
+import sys
 from plugin.feature.mega_leilao.gateway.gateway_injector_impl import GatewayInjectorImpl
+sys.setrecursionlimit(1500)
 
 presenter = GatewayInjectorImpl.inject()
-
+presenter.get_house(page=1)
 def house_per_page(event, context):
     scrap_page = event["page"]
     print("page: "+ str(scrap_page))

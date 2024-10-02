@@ -1,13 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import Any, List
-from features.mega_leilao.domain.mega_leilao_house import House
 from bs4 import Tag
 
-from features.mega_leilao.domain.mega_leilao_house_detail import HouseDetail
+from features.mega_leilao.domain.auction import AuctionParams
 
 class RepositoryAPI(ABC):
     @abstractmethod
-    def collect_data(self, url: str):
+    def collect_data(self, url: str, category: str):
         pass
 
     @abstractmethod
@@ -15,21 +14,9 @@ class RepositoryAPI(ABC):
         pass
 
     @abstractmethod
-    def do_fetch_details(self, url: str) -> Tag:
-        pass
-
-    @abstractmethod
-    def read_tags_from_site(self, site: Tag, category: str) -> List[House]:
-        pass
-
-    @abstractmethod
-    def read_tags_from_details(self, site: Tag) -> HouseDetail:
+    def read_url_from_site(self, site: Tag, category: str) -> List[AuctionParams]:
         pass
 
     @abstractmethod
     def load_category(self, type: str) -> str:
-        pass
-
-    @abstractmethod
-    def save_to_dynamodb(self, data):
         pass

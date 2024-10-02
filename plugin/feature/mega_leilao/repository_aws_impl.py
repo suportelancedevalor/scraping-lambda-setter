@@ -1,43 +1,49 @@
 from typing import List
-import uuid
 from features.mega_leilao.business.repository_aws import RepositoryAWS
-from features.mega_leilao.domain.mega_leilao_house import HouseSavedToReturn
 import boto3
-
-from features.mega_leilao.domain.mega_leilao_house_detail import HouseWithDetailToReturn
 
 class RepositoryAWSImpl(RepositoryAWS):
     client = boto3.client('dynamodb')
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table('scraping-auction-items')
     
-    def do_save(self, item: HouseWithDetailToReturn) -> HouseSavedToReturn:
+    # Function to save the extracted data into DynamoDB
+    def save_to_dynamodb(self, data):
+        # Prepare the data to be stored as a Map in DynamoDB
+        item = {
+            'id': data['id'],
+            'category': data['category'],
+            'auction_data': {
+                'title': data['title'],
+                'images': data['images'],  # List of image URLs
+                'location': data['location'],
+                'jurisdiction': data['jurisdiction'],
+                'forum': data['forum'],
+                'author': data['author'],
+                'defendant': data['defendant'],
+                'process': data['process'],
+                'control': data['control'],
+                'lot_number': data['lot_number'],
+                'last_bid': data['last_bid'],
+                'increment': data['increment'],
+                'auction_dates': {
+                    'first_auction': data['auction_dates']['first_auction'],
+                    'second_auction': data['auction_dates']['second_auction']
+                },
+                'valuation': data['valuation'],
+                'description': data['description'],
+                'pendencies': data['pendencies'],
+                'taxes': data['taxes'],
+                'debts': data['debts'],
+                'annotations': data['annotations']
+            }
+        }
+
+        # Save the data to DynamoDB as a Map structure
         try:
-            self.table.put_item(
-                Item={
-                    'id': str(uuid.uuid4()),
-                    'batch_code': item.house.batch_code,
-                    'price': item.house.price,
-                    'category': item.house.category,
-                    'title': item.house.title,
-                    'card_locality': item.house.card_locality,
-                    'street_address': item.house.street_address,
-                    'number_address': item.house.number_address,
-                    'neighborhood_address': item.house.neighborhood_address,
-                    'city_address': item.house.city_address,
-                    'state_address': item.house.state_address,
-                    'status': item.house.status,
-                    'auction_id': item.house.auction_id,
-                    'auctioneer': item.house.auctioneer,
-                    'card_image': item.house.card_image,
-                    'principal': item.house.principal,
-                    'size': item.house.size,
-                    'enabled': item.house.enabled,
-                    'lat': item.house.lat,
-                    'lng': item.house.lng
-                })
-        except KeyError:
-            statusCode = 400
-            
-        return HouseSavedToReturn(item)
-    
+            response = self.table.put_item(Item=item)
+            print("Data successfully saved to DynamoDB!")
+            return response
+        except Exception as e:
+            print(f"Error saving to DynamoDB: {str(e)}")
+            return None
