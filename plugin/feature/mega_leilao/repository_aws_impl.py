@@ -12,7 +12,6 @@ class RepositoryAWSImpl(RepositoryAWS):
         # Prepare the data to be stored as a Map in DynamoDB
         item = {
             'id': data['id'],
-            'category': data['category'],
             'auction_data': {
                 'title': data['title'],
                 'images': data['images'],  # List of image URLs
