@@ -25,6 +25,7 @@ class PresenterImpl(GatewayInjector, BaseController, Presenter):
         sequence = SequenceUseCase.builder()
         for param in params:
             sequence.add(use_case=self.fetcher_api_detail, param=param)
+            break
         
         usecases = sequence.build()
         self.dispatch_use_case(None, usecases)

@@ -113,36 +113,49 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
 
     def extract_first_instance(self, soup):
         """
-        Extracts the first auction date from the HTML.
+        Extracts the first instance auction date from the HTML.
+        Returns an object with key 'first_instance' and its corresponding value.
         """
         first_instance_tag = soup.find('span', class_='card-first-instance-date')
-        return self.clean_text(first_instance_tag.get_text(strip=True)) if first_instance_tag else 'first_instance_not_found'
+        first_instance_value_tag = soup.find('span', class_='card-instance-value')
+        
+        if first_instance_tag and first_instance_value_tag:
+            return {
+                'date': first_instance_tag.get_text(strip=True),
+                'value': first_instance_value_tag.get_text(strip=True)
+            }
+        else:
+            return {'first_instance': 'first_instance_not_found'}
 
     def extract_second_instance(self, soup):
         """
-        Extracts the second auction date from the HTML.
+        Extracts the second instance auction date from the HTML.
+        Returns an object with key 'second_instance' and its corresponding value.
         """
         second_instance_tag = soup.find('span', class_='card-second-instance-date')
-        return self.clean_text(second_instance_tag.get_text(strip=True)) if second_instance_tag else 'second_instance_not_found'
+        second_instance_value_tag = soup.find('span', class_='card-instance-value')
+        
+        if second_instance_tag and second_instance_value_tag:
+            return {
+                'date': second_instance_tag.get_text(strip=True),
+                'value': second_instance_value_tag.get_text(strip=True)
+            }
+        else:
+            return {'second_instance': 'second_instance_not_found'}
 
     def extract_valuation(self, soup):
         """
-        Extracts the valuation value from a BeautifulSoup object, specifically looking for text
-        within the 'rating-value' class. Cleans the extracted text by removing unnecessary spaces,
-        newlines, and special characters.
+        Extracts the monetary valuation value from the HTML, returning only the numeric portion.
         """
         valuation_tag = soup.find('div', class_='rating-value')
-        
         if valuation_tag:
-            valuation_text = valuation_tag.find('div', class_='value').get_text(strip=True)
-            
-            # Remove non-numeric characters, except for '.', ',', and 'R$'
-            cleaned_valuation = re.sub(r'[^\d.,R$]', '', valuation_text)
-            
-            # Return cleaned valuation
-            return cleaned_valuation
-        
-        return 'valuation_not_found'
+            text = valuation_tag.find('div', class_='value').get_text(strip=True)
+            # Regular expression to match the monetary value (R$ followed by numbers, commas, and periods)
+            match = re.search(r'R\$\s*([\d\.,]+)', text)
+            if match:
+                # Return the matched monetary value, removing periods for thousands and replacing commas with periods for decimals
+                return match.group(1).replace('.', '').replace(',', '.')
+        return '00.00'
 
     def extract_images(self, soup):
         """
@@ -175,15 +188,16 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
     def extract_auction_dates(self, soup):
         """
         Extracts the auction dates (both first and second instances) from the HTML.
-        If either first_instance or second_instance is empty, it returns 'não informado'.
+        Only includes valid dates in the resulting dictionary.
         """
-        first_instance = self.extract_first_instance(soup) or 'não informado'
-        second_instance = self.extract_second_instance(soup) or 'não informado'
-        
-        return {
-            'first_instance': first_instance,
-            'second_instance': second_instance
+        first_instance = self.extract_first_instance(soup)
+        second_instance = self.extract_second_instance(soup)
+        auction_dates = {
+            "first_instance" : first_instance,
+            "second_instance" : second_instance
         }
+        
+        return auction_dates if auction_dates else 'auction_dates_not_found'
 
     def extract_description(self, soup):
         """
