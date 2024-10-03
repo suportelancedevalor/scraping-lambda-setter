@@ -2,6 +2,10 @@ from typing import List
 from features.mega_leilao.business.repository_aws import RepositoryAWS
 import boto3
 
+from typing import List
+from features.mega_leilao.business.repository_aws import RepositoryAWS
+import boto3
+
 class RepositoryAWSImpl(RepositoryAWS):
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table('scraping-auction-items')
@@ -13,9 +17,15 @@ class RepositoryAWSImpl(RepositoryAWS):
         # Prepare the item to be saved to DynamoDB
         dynamodb_item = self.prepare_dynamodb_item(data)
 
-        print(dynamodb_item)
-        self.table.put_item(Item=dynamodb_item)
-        
+        # Save the data to DynamoDB as a Map structure
+        try:
+            response = self.table.put_item(Item=dynamodb_item)
+            print("Data successfully saved to DynamoDB!")
+            return response
+        except Exception as e:
+            print(f"Error saving to DynamoDB: {str(e)}")
+            return None
+
 
     def prepare_dynamodb_item(self, data):
         """
