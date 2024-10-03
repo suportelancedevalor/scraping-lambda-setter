@@ -175,9 +175,11 @@ class RepositoryAPIImpl(BaseRepository, RepositoryAPI):
     def extract_auction_dates(self, soup):
         """
         Extracts the auction dates (both first and second instances) from the HTML.
+        If either first_instance or second_instance is empty, it returns 'não informado'.
         """
-        first_instance = self.extract_first_instance(soup)
-        second_instance = self.extract_second_instance(soup)
+        first_instance = self.extract_first_instance(soup) or 'não informado'
+        second_instance = self.extract_second_instance(soup) or 'não informado'
+        
         return {
             'first_instance': first_instance,
             'second_instance': second_instance

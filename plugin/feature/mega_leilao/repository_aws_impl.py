@@ -13,10 +13,10 @@ class RepositoryAWSImpl(RepositoryAWS):
         item = {
             'id': data['id'],
             'auction_data': {
+                'category': data['category'],
                 'title': data['title'],
                 'images': data['images'],  # List of image URLs
                 'location': data['location'],
-                'category': data['category'],
                 'jurisdiction': data['jurisdiction'],
                 'forum': data['forum'],
                 'author': data['author'],
@@ -27,8 +27,8 @@ class RepositoryAWSImpl(RepositoryAWS):
                 'last_bid': data['last_bid'],
                 'increment': data['increment'],
                 'auction_dates': {
-                    'first_auction': data['auction_dates']['first_auction'],
-                    'second_auction': data['auction_dates']['second_auction']
+                    'first_auction': data['auction_dates']['first_instance'],
+                    'second_auction': data['auction_dates']['second_instance']
                 },
                 'valuation': data['valuation'],
                 'lat': data['lat'],
@@ -40,7 +40,7 @@ class RepositoryAWSImpl(RepositoryAWS):
                 'annotations': data['annotations']
             }
         }
-
+        
         # Save the data to DynamoDB as a Map structure
         try:
             response = self.table.put_item(Item=item)

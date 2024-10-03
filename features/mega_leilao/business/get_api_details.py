@@ -14,6 +14,6 @@ class GETAPIDetailUseCase(UseCase[AuctionParams, AuctionDataCollection]):
     def execute(self, param: AuctionParams) -> Output[AuctionDataCollection]:
         collected_data = self.repo.collect_data(url=param.url, category=param.category)
         if collected_data is not None:
-            self.repo.save_to_dynamodb(collected_data)
+            self.repo_aws.save_to_dynamodb(collected_data)
             
         return ValueOutput(collected_data)

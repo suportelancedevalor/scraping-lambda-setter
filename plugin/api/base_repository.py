@@ -4,9 +4,7 @@ from bs4 import BeautifulSoup
 from ode.authentication_exception import AuthenticationException
 from ode.http_exception import HttpException
 from ode.internet_connection_exception import InternetConnectionException
-
 from plugin.api.scraping_auction_api import ScrapingAuctionAPI
-
 
 class BaseRepository:
     def __init__(self, base_url: str):
