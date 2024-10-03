@@ -3,7 +3,6 @@ from features.mega_leilao.business.repository_aws import RepositoryAWS
 import boto3
 
 class RepositoryAWSImpl(RepositoryAWS):
-    client = boto3.client('dynamodb')
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table('scraping-auction-items')
     
@@ -14,6 +13,7 @@ class RepositoryAWSImpl(RepositoryAWS):
             'id': data['id'],
             'auction_data': {
                 'category': data['category'],
+                'status': data['status'],
                 'title': data['title'],
                 'images': data['images'],  # List of image URLs
                 'location': data['location'],
